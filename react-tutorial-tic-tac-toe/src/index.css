@@ -1,0 +1,48 @@
+html,
+body,
+.container,
+#root {
+  height: 100%;
+}
+body {
+  background: #eab676;
+}
+.board {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  /* grid-template-columns: repeat(3, 1fr); */
+}
+.board-row {
+  display: grid;
+  height: 100px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.square {
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 50px;
+  line-height: 50px;
+  font-weight: bold;
+
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  /* width: 34px; */
+}
+.game {
+  display: flex;
+  margin: inherit;
+}
+
+.list-item {
+  list-style-type: number;
+  margin: inherit;
+}
+.container {
+  margin: 30px;
+}
