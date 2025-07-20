@@ -1,17 +1,16 @@
 // 井字棋游戏
 import { useState } from 'react';
 let playing = false;
+let isWinner = false;
 function playSound(soundId) {
-  
+  if (isWinner) return;
   const playSound = document.querySelector(`#${soundId}`);
-
   if (!playing) {
     playSound.play();
     playSound.currentTime = 0;
     playing = true;
   }
-
-  if (playSound.paused) playing = false;
+  if (playing) playing = false; 
 }
 function Square({ value, onSecondClick }) {
   return (
@@ -26,9 +25,9 @@ function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   let xIsNext = currentMove % 2 === 0;
+  // 当前最新的棋盘
   let currentSquares = history[currentMove];
 
-  // TODO: 做步数
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
 
@@ -47,16 +46,13 @@ function Game() {
   }
 
   const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = 'Go to move #' + move;
-    } else {
-      description = 'Go to start';
-    }
-    // 传递整个棋盘
     return (
       <li key={move} className="list-item">
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        {move === currentMove ? (
+          <>You are move #{move}</>
+        ) : (
+          <button onClick={() => jumpTo(move)}>You are at move #{move}</button>
+        )}
       </li>
     );
   });
@@ -74,7 +70,7 @@ function Game() {
 }
 function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
-    playSound('cheerSound');
+    playSound('clickSound');
 
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -91,7 +87,7 @@ function Board({ xIsNext, squares, onPlay }) {
   let winner = calculateWinner(squares);
   let status;
   if (winner) {
-    playSound('failureSound');
+    isWinner = winner;
     status = '当前获胜者是' + winner;
   } else {
     status = '下一步是' + (xIsNext ? 'X' : 'O');
